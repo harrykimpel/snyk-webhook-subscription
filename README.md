@@ -40,7 +40,7 @@ Once this webhook is created, you can the continue to the next step.
 
 ## 2. Create an Azure Function App in order to receive the webhook from Snyk
 
-I provided this [sample Azure Function](azure-function-azure-boards.cs) code written in C# in order to process the payload from Snyk and send it to an Azure DevOps Board.
+I provided two sample Azure Functions for [Azure DevOps Boards](azure-function-azure-boards.cs) and [Microsoft Teams](azure-function-microsoft-teams.cs) code written in C# in order to process the payload from Snyk and send it to an Azure DevOps Board.
 
 This Azure Function requires the following environment variables to be set-up in order for work items to be created in Azure DevOps Boards:
 
