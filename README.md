@@ -20,7 +20,7 @@ Content-Type: application/json
 
 As a result, you will get a response like this:
 
-````json
+```json
 {
   "id": "{SNYK-WEBHOOK-ID}",
   "url": "https://{URL}",
@@ -29,7 +29,7 @@ As a result, you will get a response like this:
 
 You could then use the Snyk Ping API in order to pro-actively trigger the webhook in order to test your integration:
 
-```
+```json
 POST https://snyk.io/api/v1/org/{SNYK-ORG-ID}/webhooks/{SNYK-WEBHOOK-ID}/ping HTTP/2
 Host: snyk.io
 Authorization: token {SNYK-TOKEN}
@@ -52,4 +52,4 @@ This Azure Function requires the following environment variables to be set-up in
 
 3. Based on the notifications settings in your Snyk account, you will then be notified of new issues in your repositories
 
-![](azure-devops.boards.png)
+![](/azure-devops.boards.png)
