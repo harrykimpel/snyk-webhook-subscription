@@ -42,13 +42,19 @@ Once this webhook is created, you can the continue to the next step.
 
 I provided two sample Azure Functions for [Azure DevOps Boards](azure-function-azure-boards.cs) and [Microsoft Teams](azure-function-microsoft-teams.cs) code written in C# in order to process the payload from Snyk and send it to an Azure DevOps Board.
 
-This Azure Function requires the following environment variables to be set-up in order for work items to be created in Azure DevOps Boards:
+This Azure Functions require the following environment variables to be set-up
+
+**Azure DevOps Boards** work items to be created:
 
 - AZURE_DEVOPS_ORG: the name of the Azure DevOps organisation
 - AZURE_DEVOPS_PROJECT: the Azure DevOps project to create work items for
 - AZURE_DEVOPS_USER: the Azure DevOps user name
 - AZURE_DEVOPS_PAT: the Azure DevOps personall access token
 - AZURE_DEVOPS_API_VERSION: the Azure DevOps API version to use, e.g. "7.1-preview.3"
+
+**Microsoft Teams** messages:
+
+- MS_TEAMS_WEBHOOK: the webhook connector for your Microsoft Teams channel
 
 ## 3. Based on the notifications settings in your Snyk account, you will then be notified of new issues in your repositories
 
