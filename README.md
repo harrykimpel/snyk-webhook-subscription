@@ -52,4 +52,8 @@ This Azure Function requires the following environment variables to be set-up in
 
 ## 3. Based on the notifications settings in your Snyk account, you will then be notified of new issues in your repositories
 
+### Azure DevOps Boards
 ![](/azure-devops.boards.png)
+
+### Microsoft Teams
+![](/microsoft-teams.png)
