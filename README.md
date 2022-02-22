@@ -4,7 +4,7 @@ This repository contains some examples on how to subscribe to Snyk notifications
 
 Steps you need to follow in order to set-up this integration:
 
-1. Create a Snyk Webhook
+## 1. Create a Snyk Webhook
 
 ```json
 POST https://snyk.io/api/v1/org/{SNYK-ORG-ID}/webhooks HTTP/2
@@ -38,7 +38,7 @@ Content-Type: application/json
 
 Once this webhook is created, you can the continue to the next step.
 
-2. Create an Azure Function App in order to receive the webhook from Snyk
+## 2. Create an Azure Function App in order to receive the webhook from Snyk
 
 I provided this [sample Azure Function](azure-function-azure-boards.cs) code written in C# in order to process the payload from Snyk and send it to an Azure DevOps Board.
 
@@ -50,6 +50,6 @@ This Azure Function requires the following environment variables to be set-up in
 - AZURE_DEVOPS_PAT: the Azure DevOps personall access token
 - AZURE_DEVOPS_API_VERSION: the Azure DevOps API version to use, e.g. "7.1-preview.3"
 
-3. Based on the notifications settings in your Snyk account, you will then be notified of new issues in your repositories
+## 3. Based on the notifications settings in your Snyk account, you will then be notified of new issues in your repositories
 
 ![](/azure-devops.boards.png)
