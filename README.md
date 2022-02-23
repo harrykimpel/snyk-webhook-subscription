@@ -2,6 +2,12 @@
 
 This repository contains some examples on how to subscribe to Snyk notifications and process the information in order to forward these notifications to Microsoft Teams or Azure DevOps Boards.
 
+Please refer to the Snyk docs page for further information about Snyk Webhooks:
+- [Snyk Webhook docs](https://docs.snyk.io/features/integrations/snyk-webhooks)
+- [Snyk API docs](https://snyk.docs.apiary.io/#reference/webhooks)
+
+Please also note that the webhooks feature is currently in beta. While in this status, Snyk may change the API and the structure of webhook payloads at any time, without notice.
+
 Steps you need to follow in order to set-up this integration:
 
 ## 1. Create a Snyk Webhook
@@ -52,9 +58,13 @@ This Azure Functions require the following environment variables to be set-up
 - AZURE_DEVOPS_PAT: the Azure DevOps personall access token
 - AZURE_DEVOPS_API_VERSION: the Azure DevOps API version to use, e.g. "7.1-preview.3"
 
+For more information on how to create work items in Azure DevOps Boards, see this [docs page](https://docs.microsoft.com/en-us/rest/api/azure/devops/wit/work-items/create?view=azure-devops-rest-7.1).
+
 **Microsoft Teams** messages:
 
 - MS_TEAMS_WEBHOOK: the webhook connector for your Microsoft Teams channel
+
+For more information on how to format messages for Microsoft Teams connectors, see this [docs page](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using?tabs=cURL).
 
 ## 3. Based on the notifications settings in your Snyk account, you will then be notified of new issues in your repositories
 
