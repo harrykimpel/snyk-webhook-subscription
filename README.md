@@ -64,12 +64,12 @@ For more information on how to create work items in Azure DevOps Boards, see thi
 
 - MS_TEAMS_WEBHOOK: the webhook connector for your Microsoft Teams channel
 
+For more information on how to format messages for Microsoft Teams connectors, see this [docs page](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using?tabs=cURL).
+
 **New Relic** events:
 
 - NEW_RELIC_INSIGHTS_URL: URL for the New Relic accounts' event API, i.e. https://insights-collector.newrelic.com/v1/accounts/{NR-ACCOUNT-ID}/events
 - NEW_RELIC_INSIGHTS_INSERT_KEY: New Relic Insights Insert Key
-
-For more information on how to format messages for Microsoft Teams connectors, see this [docs page](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using?tabs=cURL).
 
 ## 3. Based on the notifications settings in your Snyk account, you will then be notified of new issues in your repositories
 
