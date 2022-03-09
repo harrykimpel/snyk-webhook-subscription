@@ -46,7 +46,7 @@ Once this webhook is created, you can the continue to the next step.
 
 ## 2. Create an Azure Function App in order to receive the webhook from Snyk
 
-I provided two sample Azure Functions for [Azure DevOps Boards](azure-function-azure-boards.cs) and [Microsoft Teams](azure-function-microsoft-teams.cs) code written in C# in order to process the payload from Snyk and send it to an Azure DevOps Board.
+I provided two sample Azure Functions for [Azure DevOps Boards](azure-function-azure-boards.cs), [Microsoft Teams](azure-function-microsoft-teams.cs) and [New Relic Events](azure-function-new-relic.cs) code written in C# in order to process the payload from Snyk and send it to an Azure DevOps Board.
 
 This Azure Functions require the following environment variables to be set-up
 
@@ -64,6 +64,11 @@ For more information on how to create work items in Azure DevOps Boards, see thi
 
 - MS_TEAMS_WEBHOOK: the webhook connector for your Microsoft Teams channel
 
+**New Relic** events:
+
+- NEW_RELIC_INSIGHTS_URL: URL for the New Relic accounts' event API, i.e. https://insights-collector.newrelic.com/v1/accounts/{NR-ACCOUNT-ID}/events
+- NEW_RELIC_INSIGHTS_INSERT_KEY: New Relic Insights Insert Key
+
 For more information on how to format messages for Microsoft Teams connectors, see this [docs page](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using?tabs=cURL).
 
 ## 3. Based on the notifications settings in your Snyk account, you will then be notified of new issues in your repositories
@@ -73,3 +78,6 @@ For more information on how to format messages for Microsoft Teams connectors, s
 
 ### Microsoft Teams
 ![](/microsoft-teams.png)
+
+### New Relic
+![](/new-relic.png)
