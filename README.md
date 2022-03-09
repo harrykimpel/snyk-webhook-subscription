@@ -50,7 +50,7 @@ I provided two sample Azure Functions for [Azure DevOps Boards](azure-function-a
 
 This Azure Functions require the following environment variables to be set-up
 
-## 2.1. Azure DevOps Boards work items to be created:
+### 2.1. Azure DevOps Boards work items to be created:
 
 - AZURE_DEVOPS_ORG: the name of the Azure DevOps organisation
 - AZURE_DEVOPS_PROJECT: the Azure DevOps project to create work items for
@@ -60,24 +60,24 @@ This Azure Functions require the following environment variables to be set-up
 
 For more information on how to create work items in Azure DevOps Boards, see this [docs page](https://docs.microsoft.com/en-us/rest/api/azure/devops/wit/work-items/create?view=azure-devops-rest-7.1).
 
-## 2.2. Microsoft Teams messages:
+### 2.2. Microsoft Teams messages:
 
 - MS_TEAMS_WEBHOOK: the webhook connector for your Microsoft Teams channel
 
 For more information on how to format messages for Microsoft Teams connectors, see this [docs page](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using?tabs=cURL).
 
-## 2.3. New Relic events:
+### 2.3. New Relic events:
 
 - NEW_RELIC_INSIGHTS_URL: URL for the New Relic accounts' event API, i.e. https://insights-collector.newrelic.com/v1/accounts/{NR-ACCOUNT-ID}/events
 - NEW_RELIC_INSIGHTS_INSERT_KEY: New Relic Insights Insert Key
 
 ## 3. Based on the notifications settings in your Snyk account, you will then be notified of new issues in your repositories
 
-### Azure DevOps Boards
+### 3.1. Azure DevOps Boards
 ![](/azure-devops.boards.png)
 
-### Microsoft Teams
+### 3.2. Microsoft Teams
 ![](/microsoft-teams.png)
 
-### New Relic
+### 3.3. New Relic
 ![](/new-relic.png)
