@@ -48,7 +48,7 @@ For more information on how to format messages for Microsoft Teams connectors, s
 
 ### 1.5. Gather Azure Function URL
 
-Select the appropriate Azure Function and copy the Function URL.
+Select the appropriate Azure Function and copy the Function URL (pls. find below an example for my New Relic Azure Function).
 
 ![](/azure-function-url.png)
 
