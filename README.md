@@ -75,7 +75,7 @@ For more information on how to format messages for Microsoft Teams connectors, s
 - NEW_RELIC_INSIGHTS_INSERT_KEY: New Relic Insights Insert Key
 
 ### 2.4. DataDog events:
-<img src="datadog.png" width="50">
+<img src="datadog-logo.png" width="50">
 
 - DATADOG_EVENTS_URL: URL for the DataDog event API, i.e. https://api.datadoghq.com/api/v1/events
 - DATADOG_API_KEY: DataDog API Key
@@ -90,3 +90,6 @@ For more information on how to format messages for Microsoft Teams connectors, s
 
 ### 3.3. New Relic
 ![](/new-relic.png)
+
+### 3.4. DataDog
+![](/datadog.png)
