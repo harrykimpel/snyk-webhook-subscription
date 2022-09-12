@@ -46,7 +46,7 @@ Once this webhook is created, you can the continue to the next step.
 
 ## 2. Create an Azure Function App in order to receive the webhook from Snyk
 
-I provided sample Azure Functions for [Azure DevOps Boards](azure-function-azure-boards.cs), [Microsoft Teams](azure-function-microsoft-teams.cs), [New Relic Events](azure-function-new-relic.cs)and [DataDog](azure-function-datadog.cs) code written in C# in order to process the payload from Snyk and send it to an Azure DevOps Board.
+I provided sample Azure Functions for [Azure DevOps Boards](azure-function-azure-boards.cs), [Microsoft Teams](azure-function-microsoft-teams.cs), [New Relic Events](azure-function-new-relic.cs) and [DataDog](azure-function-datadog.cs) code written in C# in order to process the payload from Snyk and send it to an Azure DevOps Board.
 
 This Azure Functions require the following environment variables to be set-up
 
