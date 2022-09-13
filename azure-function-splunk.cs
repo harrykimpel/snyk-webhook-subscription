@@ -36,24 +36,41 @@ public static async Task<IActionResult> Run(HttpRequest req, ILogger log)
         name = name ?? data?.name;
         string browseUrl = data.project.browseUrl;
 
-        // send data to DataDog
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sbDimensions = new StringBuilder();
+        sbDimensions.Append("      , \"dimensions\": {");
+        sbDimensions.Append("        \"projectName\": \"" + projectName + "\",");
+        sbDimensions.Append("        \"browseUrl\": \"" + browseUrl + "\",");
+        sbDimensions.Append("        \"imageId\": \"" + data.project.imageId + "\",");
+        sbDimensions.Append("        \"imageTag\": \"" + data.project.imageTag + "\",");
+        sbDimensions.Append("        \"imagePlatform\": \"" + data.project.imagePlatform + "\",");
+        sbDimensions.Append("        \"imageBaseImage\": \"" + data.project.imageBaseImage + "\",");
+        sbDimensions.Append("        \"containerImage\": \"" + data.project.imageBaseImage + "\"");
+        sbDimensions.Append("      }");
 
+        // send data to Splunk
+        StringBuilder sb = new StringBuilder();
         sb.Append("{");
-        sb.Append("  \"title\": \"Snyk: " + projectName + "\",");
-        sb.Append("  \"text\": \"Snyk: " + projectName + "\",");
-        sb.Append("  \"tags\": [");
-        sb.Append("    \"projectName:" + projectName + "\",");
-        sb.Append("    \"browseUrl:" + browseUrl + "\",");
-        sb.Append("    \"imageId:" + data.project.imageId + "\",");
-        sb.Append("    \"imageTag:" + data.project.imageTag + "\",");
-        sb.Append("    \"imagePlatform:" + data.project.imagePlatform + "\",");
-        sb.Append("    \"imageBaseImage:" + data.project.imageBaseImage + "\",");
-        sb.Append("    \"containerImage:" + containerImage + "\",");
-        sb.Append("    \"issueCountsBySeverityLow:" + data.project.issueCountsBySeverity.low + "\",");
-        sb.Append("    \"issueCountsBySeverityHigh:" + data.project.issueCountsBySeverity.high + "\",");
-        sb.Append("    \"issueCountsBySeverityMedium:" + data.project.issueCountsBySeverity.medium + "\",");
-        sb.Append("    \"issueCountsBySeverityCritical:" + data.project.issueCountsBySeverity.critical + "\"");
+        sb.Append("  \"gauge\": [");
+        sb.Append("    {");
+        sb.Append("      \"metric\": \"Snyk.issueCountsBySeverityLow\",");
+        sb.Append("      \"value\": " + data.project.issueCountsBySeverity.low + "");
+        sb.Append(sbDimensions.ToString());
+        sb.Append("    },");
+        sb.Append("    {");
+        sb.Append("       \"metric\": \"Snyk.issueCountsBySeverityHigh\",");
+        sb.Append("       \"value\": " + data.project.issueCountsBySeverity.high + "");
+        sb.Append(sbDimensions.ToString());
+        sb.Append("    },");
+        sb.Append("    {");
+        sb.Append("      \"metric\": \"Snyk.issueCountsBySeverityMedium\",");
+        sb.Append("      \"value\": " + data.project.issueCountsBySeverity.medium + "");
+        sb.Append(sbDimensions.ToString());
+        sb.Append("    },");
+        sb.Append("    {");
+        sb.Append("      \"metric\": \"Snyk.issueCountsBySeverityCritical\",");
+        sb.Append("      \"value\": " + data.project.issueCountsBySeverity.critical + "");
+        sb.Append(sbDimensions.ToString());
+        sb.Append("    }");
         sb.Append("  ]");
         sb.Append("}");
 
@@ -64,12 +81,12 @@ public static async Task<IActionResult> Run(HttpRequest req, ILogger log)
 
         content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-        var DATADOG_EVENTS_URL = Environment.GetEnvironmentVariable("DATADOG_EVENTS_URL");
-        var DATADOG_API_KEY = Environment.GetEnvironmentVariable("DATADOG_API_KEY");
+        var SPLUNK_EVENTS_URL = Environment.GetEnvironmentVariable("SPLUNK_EVENTS_URL");
+        var SPLUNK_ACCESS_TOKEN = Environment.GetEnvironmentVariable("SPLUNK_ACCESS_TOKEN");
 
-        var url = DATADOG_EVENTS_URL;
+        var url = SPLUNK_EVENTS_URL;
         using var client = new HttpClient();
-        client.DefaultRequestHeaders.Add("DD-API-KEY", DATADOG_API_KEY);
+        client.DefaultRequestHeaders.Add("X-SF-TOKEN", SPLUNK_ACCESS_TOKEN);
         var response = await client.PostAsync(url, content);
 
         string result = response.Content.ReadAsStringAsync().Result;
