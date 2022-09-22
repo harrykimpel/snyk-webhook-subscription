@@ -32,12 +32,36 @@ public static async Task<IActionResult> Run(HttpRequest req, ILogger log)
             containerImage = projectNameParts[1] + ":" + data.project.imageTag;
         }
         string repoURL = data.project.name;
+        string entityLookupValue = repoURL;
         int idxRepoURLBranch = repoURL.IndexOf("(");
         if (data.project.origin == "github")
         {
+            int idxRepoURLProject = repoURL.IndexOf(":");
+            string package = "";
             if (idxRepoURLBranch >= 0)
             {
+                package = repoURL.Substring(idxRepoURLProject + 1, repoURL.Length - idxRepoURLProject - 1);
+                log.LogInformation("package: " + package);
+                entityLookupValue = "https://github.com/" + repoURL.Substring(0, idxRepoURLBranch);
                 repoURL = "https://github.com/" + repoURL.Substring(0, idxRepoURLBranch);
+
+                if (data.project.branch != "")
+                {
+                    repoURL = repoURL + "/blob/" + data.project.branch + "/" + package;
+                }
+            }
+            else
+            {
+                entityLookupValue = "https://github.com/" + repoURL.Substring(0, idxRepoURLProject);
+                repoURL = "https://github.com/" + repoURL.Substring(0, idxRepoURLProject);
+            }
+        }
+        else if (data.project.origin == "docker-hub")
+        {
+            if (idxRepoURLBranch >= 0)
+            {
+                entityLookupValue = "https://hub.docker.com/repository/docker/" + repoURL.Substring(0, idxRepoURLBranch);
+                repoURL = "https://hub.docker.com/repository/docker/" + repoURL.Substring(0, idxRepoURLBranch);
 
                 if (data.project.branch != "")
                 {
@@ -47,26 +71,15 @@ public static async Task<IActionResult> Run(HttpRequest req, ILogger log)
             else
             {
                 int idxRepoURLProject = repoURL.IndexOf(":");
-                repoURL = "https://github.com/" + repoURL.Substring(0, idxRepoURLProject);
-            }
-        }
-        else if (data.project.origin == "docker-hub")
-        {
-            if (idxRepoURLBranch >= 0)
-            {
-                repoURL = "https://hub.docker.com/repository/docker/" + repoURL.Substring(0, idxRepoURLBranch);
-
-                if (data.project.branch != "")
-                {
-                    //repoURL = repoURL + "/tree/" + data.project.branch;
-                }
-            }
-            else
-            {
-                int idxRepoURLProject = repoURL.IndexOf(":");
+                entityLookupValue = "https://hub.docker.com/repository/docker/" + repoURL.Substring(0, idxRepoURLProject);
                 repoURL = "https://hub.docker.com/repository/docker/" + repoURL.Substring(0, idxRepoURLProject);
             }
         }
+        else if (data.project.origin == "azure-repos")
+        {
+            //log.LogInformation("data: " + requestBody);
+        }
+
         log.LogInformation(projectName + ", data.newIssues.Count: " + count);
         responseMessage = "No new issues found. Nothing to process!";
 
@@ -76,24 +89,7 @@ public static async Task<IActionResult> Run(HttpRequest req, ILogger log)
 
         // send data to New Relic
         StringBuilder sb = new StringBuilder();
-
-        sb.Append("[{");
-        sb.Append("  \"eventType\": \"SnykProject\",");
-        sb.Append("  \"eventSource\": \"Snyk\",");
-        sb.Append("  \"projectName\": \"" + projectName + "\",");
-        sb.Append("  \"repoURL\": \"" + repoURL + "\",");
-        sb.Append("  \"browseUrl\": \"" + browseUrl + "\",");
-        sb.Append("  \"imageId\": \"" + data.project.imageId + "\",");
-        sb.Append("  \"imageTag\": \"" + data.project.imageTag + "\",");
-        sb.Append("  \"imagePlatform\": \"" + data.project.imagePlatform + "\",");
-        sb.Append("  \"imageBaseImage\": \"" + data.project.imageBaseImage + "\",");
-        sb.Append("  \"containerImage\": \"" + containerImage + "\",");
-        sb.Append("  \"issueCountsBySeverityLow\": " + data.project.issueCountsBySeverity.low + ",");
-        sb.Append("  \"issueCountsBySeverityHigh\": " + data.project.issueCountsBySeverity.high + ",");
-        sb.Append("  \"issueCountsBySeverityMedium\": " + data.project.issueCountsBySeverity.medium + ",");
-        sb.Append("  \"issueCountsBySeverityCritical\": " + data.project.issueCountsBySeverity.critical + ",");
-        sb.Append("  \"snykOrigin\": \"" + data.project.origin + "\"");
-        sb.Append("}");
+        sb.Append("[");
 
         if (data.newIssues.Count > 0)
         {
@@ -117,33 +113,58 @@ public static async Task<IActionResult> Run(HttpRequest req, ILogger log)
                 //var encoded = HttpUtility.HtmlEncode(descr);
                 //log.LogInformation("data.newIssues[i].issueData.description:" + descr);
 
-                sb.Append(",{");
-                sb.Append("  \"eventType\": \"SnykProjectIssue\",");
-                sb.Append("  \"eventSource\": \"Snyk\",");
+                if (i > 0)
+                {
+                    sb.Append(",");
+                }
+                sb.Append("{");
+                sb.Append("  \"eventType\": \"SnykFindings\",");
+                sb.Append("  \"entityType\": \"Repository\",");
+                //sb.Append("  \"eventSource\": \"Snyk\",");
                 sb.Append("  \"projectName\": \"" + projectName + "\",");
-                sb.Append("  \"repoURL\": \"" + repoURL + "\",");
-                sb.Append("  \"browseUrl\": \"" + browseUrl + "\",");
-                sb.Append("  \"issueType\": \"" + issueType + "\",");
-                sb.Append("  \"pkgName\": \"" + pkgName + "\",");
-                sb.Append("  \"priorityScore\": " + priorityScore + ",");
-                sb.Append("  \"severity\": \"" + severity + "\",");
+                sb.Append("  \"entityLookupValue\": \"" + entityLookupValue + "\",");
+                sb.Append("  \"issueInstanceKey\": \"" + repoURL + "\",");
+                sb.Append("  \"disclosureUrl\": \"" + browseUrl + "\",");
                 sb.Append("  \"imageId\": \"" + data.project.imageId + "\",");
                 sb.Append("  \"imageTag\": \"" + data.project.imageTag + "\",");
                 sb.Append("  \"imagePlatform\": \"" + data.project.imagePlatform + "\",");
                 sb.Append("  \"imageBaseImage\": \"" + data.project.imageBaseImage + "\",");
                 sb.Append("  \"containerImage\": \"" + containerImage + "\",");
+                sb.Append("  \"issueCountsBySeverityLow\": " + data.project.issueCountsBySeverity.low + ",");
+                sb.Append("  \"issueCountsBySeverityHigh\": " + data.project.issueCountsBySeverity.high + ",");
+                sb.Append("  \"issueCountsBySeverityMedium\": " + data.project.issueCountsBySeverity.medium + ",");
+                sb.Append("  \"issueCountsBySeverityCritical\": " + data.project.issueCountsBySeverity.critical + ",");
+                sb.Append("  \"snykOrigin\": \"" + data.project.origin + "\",");
+                //sb.Append("}");
+                //sb.Append(",{");
+                //sb.Append("  \"eventType\": \"SnykProjectIssue\",");
+                sb.Append("  \"source\": \"Snyk\",");
+                //sb.Append("  \"projectName\": \"" + projectName + "\",");
+                //sb.Append("  \"repoURL\": \"" + repoURL + "\",");
+                //sb.Append("  \"browseUrl\": \"" + browseUrl + "\",");
+                sb.Append("  \"issueType\": \"Library Vulnerability\",");
+                sb.Append("  \"snykIssueType\": \"" + issueType + "\",");
+                sb.Append("  \"pkgName\": \"" + pkgName + "\",");
+                sb.Append("  \"priorityScore\": " + priorityScore + ",");
+                sb.Append("  \"severity\": \"" + severity + "\",");
+                /*sb.Append("  \"imageId\": \"" + data.project.imageId + "\",");
+                sb.Append("  \"imageTag\": \"" + data.project.imageTag + "\",");
+                sb.Append("  \"imagePlatform\": \"" + data.project.imagePlatform + "\",");
+                sb.Append("  \"imageBaseImage\": \"" + data.project.imageBaseImage + "\",");
+                sb.Append("  \"containerImage\": \"" + containerImage + "\",");*/
                 sb.Append("  \"issueId\": \"" + id + "\",");
-                sb.Append("  \"issueDescr\": \"" + descr + "\",");
-                sb.Append("  \"snykOrigin\": \"" + data.project.origin + "\"");
+                sb.Append("  \"message\": \"" + descr + "\"");
+                //sb.Append("  \"snykOrigin\": \"" + data.project.origin + "\"");
                 sb.Append("}");
                 if (i == 0)
                 {
-                    log.LogInformation("sb:" + sb.ToString());
+                    //log.LogInformation("sb:" + sb.ToString());
                 }
             }
         }
 
         sb.Append("]");
+        log.LogInformation("sb:" + sb.ToString());
 
         string payload = sb.ToString();
         //log.LogInformation("content: " + payload);
