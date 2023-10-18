@@ -17,6 +17,7 @@ I provided sample Azure Functions for:
 
 - <img src="azure-devops-boards-logo.png" width="50"> [Azure DevOps Boards](azure-function-azure-boards.cs)
 - <img src="microsoft-teams-logo.png" width="50"> [Microsoft Teams](azure-function-microsoft-teams.cs)
+- <img src="newrelic-logo.png" width="50"> [New Relic Security API](azure-function-newrelic-security-api.cs)
 - <img src="newrelic-logo.png" width="50"> [New Relic Events](azure-function-newrelic.cs)
 - <img src="datadog-logo.png" width="50"> [DataDog](azure-function-datadog.cs)
 - <img src="splunk-logo.png" width="50"> [Splunk](azure-function-splunk.cs)
