@@ -3,6 +3,7 @@
 This repository contains some examples on how to subscribe to Snyk notifications and process the information in order to forward these notifications to Microsoft Teams or Azure DevOps Boards.
 
 Please refer to the Snyk docs page for further information about Snyk Webhooks:
+
 - [Snyk Webhook docs](https://docs.snyk.io/features/integrations/snyk-webhooks)
 - [Snyk API docs](https://snyk.docs.apiary.io/#reference/webhooks)
 
@@ -13,6 +14,7 @@ Steps you need to follow in order to set-up this integration:
 ## 1. Create an Azure Function App in order to receive the webhook from Snyk
 
 I provided sample Azure Functions for:
+
 - <img src="azure-devops-boards-logo.png" width="50"> [Azure DevOps Boards](azure-function-azure-boards.cs)
 - <img src="microsoft-teams-logo.png" width="50"> [Microsoft Teams](azure-function-microsoft-teams.cs)
 - <img src="newrelic-logo.png" width="50"> [New Relic Events](azure-function-newrelic.cs)
@@ -23,7 +25,8 @@ These are all written in C# in order to process the payload from Snyk and send i
 
 This Azure Functions require the following environment variables to be set-up
 
-### 1.1. Azure DevOps Boards work items to be created:
+### 1.1. Azure DevOps Boards work items to be created
+
 <img src="azure-devops-boards-logo.png" width="50">
 
 - AZURE_DEVOPS_ORG: the name of the Azure DevOps organisation
@@ -34,32 +37,44 @@ This Azure Functions require the following environment variables to be set-up
 
 For more information on how to create work items in Azure DevOps Boards, see this [docs page](https://docs.microsoft.com/en-us/rest/api/azure/devops/wit/work-items/create?view=azure-devops-rest-7.1).
 
-### 1.2. Microsoft Teams messages:
+### 1.2. Microsoft Teams messages
+
 <img src="microsoft-teams-logo.png" width="50">
 
 - MS_TEAMS_WEBHOOK: the webhook connector for your Microsoft Teams channel
 
 For more information on how to format messages for Microsoft Teams connectors, see this [docs page](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using?tabs=cURL).
 
-### 1.3. New Relic events:
+### 1.3. New Relic security API
+
 <img src="newrelic-logo.png" width="50">
 
-- NEW_RELIC_INSIGHTS_URL: URL for the New Relic accounts' event API, i.e. https://insights-collector.newrelic.com/v1/accounts/{NR-ACCOUNT-ID}/events
+- NEW_RELIC_SECURITY_URL: URL for the New Relic accounts' security API, i.e. <https://security-api.newrelic.com/security/v1>
+- NEW_RELIC_INSIGHTS_INSERT_KEY: New Relic Insights Insert Key
+- NEW_RELIC_INSIGHTS_URL: URL for the New Relic accounts' event API, i.e. <https://insights-collector.newrelic.com/v1/accounts/{NR-ACCOUNT-ID}/events> (this is for troubleshooting purposes only)
+
+### 1.4. New Relic events
+
+<img src="newrelic-logo.png" width="50">
+
+- NEW_RELIC_INSIGHTS_URL: URL for the New Relic accounts' event API, i.e. <https://insights-collector.newrelic.com/v1/accounts/{NR-ACCOUNT-ID}/events>
 - NEW_RELIC_INSIGHTS_INSERT_KEY: New Relic Insights Insert Key
 
-### 1.4. DataDog events:
+### 1.5. DataDog events
+
 <img src="datadog-logo.png" width="50">
 
-- DATADOG_EVENTS_URL: URL for the DataDog event API, i.e. https://api.datadoghq.com/api/v1/events
+- DATADOG_EVENTS_URL: URL for the DataDog event API, i.e. <https://api.datadoghq.com/api/v1/events>
 - DATADOG_API_KEY: DataDog API Key
 
-### 1.5. Splunk metrics:
+### 1.6. Splunk metrics
+
 <img src="splunk-logo.png" width="50">
 
-- SPLUNK_EVENTS_URL: URL for the Splunk datapoints API, i.e. https://ingest.us1.signalfx.com/v2/datapoint
+- SPLUNK_EVENTS_URL: URL for the Splunk datapoints API, i.e. <https://ingest.us1.signalfx.com/v2/datapoint>
 - SPLUNK_ACCESS_TOKEN: Splunk Access Token
 
-### 1.6. Gather Azure Function URL
+### 1.7. Gather Azure Function URL
 
 Select the appropriate Azure Function and copy the Function URL (pls. find below an example for my New Relic Azure Function).
 
@@ -102,17 +117,22 @@ Content-Type: application/json
 ## 3. Based on the notifications settings in your Snyk account, you will then be notified of new issues in your repositories
 
 ### 3.1. Azure DevOps Boards
+
 ![](azure-devops-boards-dashboard.png)
 
 ### 3.2. Microsoft Teams
+
 ![](microsoft-teams-dashboard.png)
 
 ### 3.3. New Relic
+
 - ![](newrelic-dashboard.png)
 - ![](newrelic-dashboard-custom.png)
 
 ### 3.4. DataDog
+
 ![](datadog-dashboard.png)
 
 ### 3.5. Splunk
+
 ![](splunk-dashboard.png)
