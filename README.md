@@ -53,7 +53,7 @@ For more information on how to format messages for Microsoft Teams connectors, s
 - NEW_RELIC_SECURITY_URL: URL for New Relic security API, i.e. <https://security-api.newrelic.com/security/v1>
 - NEW_RELIC_LICENSE_KEY: license key for your New Relic account
 
-for troubleshooting purposes only:
+The next two are for troubleshooting purposes only (in catch block):
 
 - NEW_RELIC_INSIGHTS_URL: URL for the New Relic accounts' event API, i.e. <https://insights-collector.newrelic.com/v1/accounts/{NR-ACCOUNT-ID}/events>
 - NEW_RELIC_INSIGHTS_INSERT_KEY: New Relic Insights Insert Key
